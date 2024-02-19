@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile true
+    }
 
     stages {
         stage('Checkout') {
@@ -15,8 +17,8 @@ pipeline {
             steps {
                 script {
                     // Set up a virtual environment and install dependencies
-                    sh 'python -m venv venv'
-                    sh 'source venv/bin/activate && pip install -r requirements.txt'
+                    // sh 'python -m venv venv'
+                    sh 'pip install -r requirements.txt'
                 }
             }
         }
@@ -25,7 +27,7 @@ pipeline {
             steps {
                 script {
                     // Run pytest
-                    sh 'source venv/bin/activate && pytest'
+                    sh 'pytest'
                 }
             }
         }
