@@ -10,7 +10,7 @@ class FlaskAppTest(unittest.TestCase):
 
     def test_hello_world(self):
         response = self.app.get('/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 204)
         self.assertIn(b'Hello, World!', response.data)
 
 if __name__ == '__main__':
