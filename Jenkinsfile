@@ -39,7 +39,7 @@ pipeline {
                     sh 'echo "Tests Passed" > status.txt'  // Placeholder; you can replace this with actual test result logic
 
                     // GitHub Check API
-                    sh 'curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"state": "success", "description": "Tests Passed", "context": "ci/tests"}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"'
+                    sh 'curl -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"state": "success", "description": "Tests Passed", "context": "ci/tests"}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"'
                 }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     // Send GitHub comment on pull request
-                    sh 'curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"body": "Tests failed! Please check the CI logs."}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$CHANGE_ID/comments"'
+                    sh 'curl -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"body": "Tests failed! Please check the CI logs."}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$CHANGE_ID/comments"'
                 }
             }
         }
