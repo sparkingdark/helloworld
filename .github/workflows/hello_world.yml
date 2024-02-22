@@ -19,17 +19,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install bumpversion
+          pip install bump2version
 
       - name: Bump version
         run: |
           if [[ "${{ github.event_name }}" == "release" ]]; then
-            bumpversion release
+            bump2version release
           else
             # Handle automatic versioning based on other events
             # For example, you can use commit messages or other criteria
             # Adjust this part based on your specific needs
-            bumpversion minor  # or patch or major
+            bump2version minor  # or patch or major
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
