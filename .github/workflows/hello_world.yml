@@ -24,12 +24,12 @@ jobs:
       - name: Bump version
         run: |
           if [[ "${{ github.event_name }}" == "release" ]]; then
-            bump2version release
+            bump2version --config-file bumpversion.cfg
           else
             # Handle automatic versioning based on other events
             # For example, you can use commit messages or other criteria
             # Adjust this part based on your specific needs
-            bump2version minor  # or patch or major
+            bump2version --config-file bumpversion.cfg  # or patch or major
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
