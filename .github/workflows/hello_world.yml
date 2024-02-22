@@ -17,9 +17,25 @@ jobs:
         WITH_V: true
         DRY_RUN: false
 
+  gettag:
+    runs-on: ubuntu-latest
+    outputs:
+      id: latest-tag
+    steps:
+      - name: Get Tags
+        id: tags
+        run: |
+          git fetch --tags
+          echo "Tags fetched"
+      - name: Get Latest Tag
+        id: latest-tag
+        run: |
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "::set-output name=tag::$latest_tag"
+
   imagebuildandpush:
     runs-on: ubuntu-latest
-    needs: release
+    needs: [release, gettag]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,7 +57,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "rc3dockerregistry/helloworld:${{ github.ref_name }}"
+          tags: "rc3dockerregistry/helloworld:${{ needs.gettag.outputs.tag }}"
 
   scan_docker_image:
     runs-on: ubuntu-latest
@@ -64,7 +80,7 @@ jobs:
         uses: snyk/actions/docker@master
         continue-on-error: true
         with:
-          image: "rc3dockerregistry/helloworld:${{ github.ref_name }}"
+          image: "rc3dockerregistry/helloworld:${{ needs.gettag.outputs.tag }}"
           args: --file=Dockerfile --severity-threshold=high --sarif-file-output=snyk.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
