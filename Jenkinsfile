@@ -32,9 +32,8 @@ pipeline {
             }
         }
 
-        stage('Invoke GitHub Actions Workflow') {
-            steps {
-                script {
+        stage('Send GitHub action') {
+            script {
                     try {
                         def url = "https://api.github.com/repos/sparkingdark/helloworld/actions/workflows/hello_world.yml/dispatches"
                         def response = sh(script: 'curl -X POST -H "Accept: application/vnd.github.v3+json" -H "authorization: Bearer $GH_TOKEN " -d \'{"ref":"main"}\' "${url}"', returnStdout: true).trim()
@@ -44,20 +43,7 @@ pipeline {
                         currentBuild.result = 'FAILURE'
                     }
                 }
-            }
         }
-
-    //     stage('Send GitHub Check Status') {
-    //         steps {
-    //             script {
-    //                 // Send GitHub Check status (success or failure)
-    //                 sh 'echo "Tests Passed" > status.txt'  // Placeholder; you can replace this with actual test result logic
-
-    //                 // GitHub Check API
-    //                 sh 'curl -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"state": "success", "description": "Tests Passed", "context": "ci/tests"}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"'
-    //             }
-    //         }
-    //     }
 
     //     stage('Send GitHub Comment') {
     //         when {
