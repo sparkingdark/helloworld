@@ -64,6 +64,6 @@ jobs:
         - name: Deploy to Azure App Service
           uses: Azure/webapps-deploy@v2
           with:
-            app-name: '<YourAzureAppName>'  # Replace with your Azure App Service name
-            slot-name: 'production'  # Replace with your deployment slot if applicable
+            app-name: 'helloworldlldldld'  # Replace with your Azure App Service name
+            # slot-name: 'production'  # Replace with your deployment slot if applicable
             publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
