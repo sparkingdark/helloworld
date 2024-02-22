@@ -32,7 +32,7 @@ jobs:
             bumpversion minor  # or patch or major
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
   imagebuildandpush:
     runs-on: ubuntu-latest
