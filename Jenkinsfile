@@ -33,7 +33,8 @@ pipeline {
         }
 
         stage('Send GitHub action') {
-            script {
+            steps {
+                script {
                     try {
                         def url = "https://api.github.com/repos/sparkingdark/helloworld/actions/workflows/hello_world.yml/dispatches"
                         def response = sh(script: 'curl -X POST -H "Accept: application/vnd.github.v3+json" -H "authorization: Bearer $GH_TOKEN " -d \'{"ref":"main"}\' "${url}"', returnStdout: true).trim()
@@ -43,6 +44,7 @@ pipeline {
                         currentBuild.result = 'FAILURE'
                     }
                 }
+            }
         }
 
     //     stage('Send GitHub Comment') {
