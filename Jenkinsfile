@@ -36,6 +36,9 @@ pipeline {
         }
 
         stage('Send GitHub action') {
+             when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
             steps {
                  script {
                     def url = "https://api.github.com/repos/sparkingdark/helloworld/actions/workflows/hello_world.yml/dispatches"
@@ -62,17 +65,6 @@ pipeline {
             }
         }
 
-    //     stage('Send GitHub Comment') {
-    //         when {
-    //             expression { currentBuild.resultIsBetterOrEqualTo('FAILURE') }
-    //         }
-    //         steps {
-    //             script {
-    //                 // Send GitHub comment on pull request
-    //                 sh 'curl -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"body": "Tests failed! Please check the CI logs."}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$CHANGE_ID/comments"'
-    //             }
-    //         }
-    //     }
     }
 
     post {
