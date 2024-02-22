@@ -47,10 +47,10 @@ jobs:
 
       # Draft a new release on GitHub using generated version
       - name: Draft release on GitHub
-        uses: nhost/action-create-release@v3
+        uses: release-drafter/release-drafter@v5
         with:
-          tag_name: ${{ steps.release.outputs.new_version }}
-          release_name: ${{ steps.release.outputs.new_version }}
+          name-template: ${{ steps.release.outputs.new_version }}
+          tag-template: ${{ steps.release.outputs.new_version }}
           draft: true
           # Add release body and assets based on your workflow needs
 
