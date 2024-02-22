@@ -37,7 +37,13 @@ pipeline {
                 script {
                     try {
                         def url = "https://api.github.com/repos/sparkingdark/helloworld/actions/workflows/hello_world.yml/dispatches"
-                        def response = sh(script: 'curl -X POST -H "Accept: application/vnd.github.v3+json" -H "authorization: Bearer $GH_TOKEN " -d \'{"ref":"main"}\' "${url}"', returnStdout: true).trim()
+                        def response = sh(script: 'curl -L \
+  -X POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer $GH_TOKEN" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  ${url} \
+  -d '{"ref":"main",}'', returnStdout: true).trim()
                         echo "Response: ${response}"
                     } catch (Exception e) {
                         echo "Failed to invoke GitHub Actions Workflow: ${e.getMessage()}"
