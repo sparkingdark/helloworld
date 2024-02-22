@@ -1,3 +1,2 @@
 Flask
 pytest
-bump2version

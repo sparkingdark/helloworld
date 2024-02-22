@@ -7,36 +7,27 @@ on:
       - main
 
 jobs:
-  bump_version:
+  release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Get Versioning Data
+        id: versioning
+        uses: Soumeh/Auto-Versioning@main
+      - name: Create Release
+        uses: meeDamian/github-release@2.0
         with:
-          python-version: 3.x
-
-      - name: Install dependencies
-        run: |
-          pip install bump2version
-
-      - name: Bump version based on commit messages
-        run: |
-          if [[ "$(git log -1 --pretty=%B)" =~ ^fix ]]; then
-            bump2version --config-file bumpversion.cfg --new-version patch
-          elif [[ "$(git log -1 --pretty=%B)" =~ ^feat ]]; then
-            bump2version --config-file bumpversion.cfg --new-version minor
-          else
-            bump2version --config-file bumpversion.cfg --new-version patch
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # names the release after the head commit
+          name: ${{ github.event.head_commit.message }}
+          tag: ${{ steps.versioning.outputs.tag }}
+          body: "${{ steps.versioning.outputs.changelog }}"
+          gzip: false
 
   imagebuildandpush:
     runs-on: ubuntu-latest
-    needs: bump_version
+    needs: release
     steps:
       - name: Checkout
         uses: actions/checkout@v4
