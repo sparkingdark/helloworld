@@ -41,7 +41,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "rc3dockerregistry/helloworld:${{ steps.taggerDryRun.outputs.new_tag }}"
+          tags: "rc3dockerregistry/helloworld:${{ github.ref_name }}"
 
   scan_docker_image:
     runs-on: ubuntu-latest
@@ -64,7 +64,7 @@ jobs:
         uses: snyk/actions/docker@master
         continue-on-error: true
         with:
-          image: "rc3dockerregistry/helloworld:${{ steps.taggerDryRun.outputs.new_tag }}"
+          image: "rc3dockerregistry/helloworld:${{ github.ref_name }}"
           args: --file=Dockerfile --severity-threshold=high --sarif-file-output=snyk.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
