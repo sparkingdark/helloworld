@@ -38,13 +38,8 @@ pipeline {
                         try {
                             def url = "https://api.github.com/repos/sparkingdark/helloworld/actions/workflows/hello_world.yml/dispatches"
                             def payload = '{"ref":"main"}'  // JSON payload without the trailing comma
-                            def response = sh(script: '''
-                                curl -L -X POST -H "Accept: application/vnd.github.v3+json" \
-                                    -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-                                    -H "X-GitHub-Api-Version: 2022-11-28" \
-                                    -d '${payload}' \
-                                    ${url}
-                            ''', returnStdout: true).trim()
+                            def token = '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'
+                            def response = sh(script: 'curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${token}" -H "X-GitHub-Api-Version: 2022-11-28" -d \'' + payload + '\' ' + url, returnStdout: true).trim()
                             echo "Response: ${response}"
                         } catch (Exception e) {
                             echo "Failed to invoke GitHub Actions Workflow: ${e.getMessage()}"
