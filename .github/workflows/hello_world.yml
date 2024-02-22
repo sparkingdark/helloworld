@@ -2,10 +2,6 @@ name: Hello world Web app image build and deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -45,7 +41,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: rc3dockerregistry/helloworld:latest, rc3dockerregistry/helloworld:${{ steps.taggerDryRun.outputs.new_tag }}
+          tags: rc3dockerregistry/helloworld:${{ steps.taggerDryRun.outputs.new_tag }}
 
   scan_docker_image:
     runs-on: ubuntu-latest
