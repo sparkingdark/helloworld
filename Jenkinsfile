@@ -32,30 +32,45 @@ pipeline {
             }
         }
 
-        stage('Send GitHub Check Status') {
+        stage('Invoke GitHub Actions Workflow') {
             steps {
                 script {
-                    // Send GitHub Check status (success or failure)
-                    sh 'echo "Tests Passed" > status.txt'  // Placeholder; you can replace this with actual test result logic
-
-                    // GitHub Check API
-                    sh 'curl -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"state": "success", "description": "Tests Passed", "context": "ci/tests"}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"'
+                    try {
+                        def url = "https://api.github.com/repos/sparkingdark/helloworld/actions/workflows/hello_world.yml/dispatches"
+                        def response = sh(script: 'curl -X POST -H "Accept: application/vnd.github.v3+json" -H "authorization: Bearer $GH_TOKEN " -d \'{"ref":"main"}\' "${url}"', returnStdout: true).trim()
+                        echo "Response: ${response}"
+                    } catch (Exception e) {
+                        echo "Failed to invoke GitHub Actions Workflow: ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                    }
                 }
             }
         }
 
-        stage('Send GitHub Comment') {
-            when {
-                expression { currentBuild.resultIsBetterOrEqualTo('FAILURE') }
-            }
-            steps {
-                script {
-                    // Send GitHub comment on pull request
-                    sh 'curl -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"body": "Tests failed! Please check the CI logs."}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$CHANGE_ID/comments"'
-                }
-            }
-        }
-    }
+    //     stage('Send GitHub Check Status') {
+    //         steps {
+    //             script {
+    //                 // Send GitHub Check status (success or failure)
+    //                 sh 'echo "Tests Passed" > status.txt'  // Placeholder; you can replace this with actual test result logic
+
+    //                 // GitHub Check API
+    //                 sh 'curl -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"state": "success", "description": "Tests Passed", "context": "ci/tests"}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"'
+    //             }
+    //         }
+    //     }
+
+    //     stage('Send GitHub Comment') {
+    //         when {
+    //             expression { currentBuild.resultIsBetterOrEqualTo('FAILURE') }
+    //         }
+    //         steps {
+    //             script {
+    //                 // Send GitHub comment on pull request
+    //                 sh 'curl -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" -d \'{"body": "Tests failed! Please check the CI logs."}\' "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$CHANGE_ID/comments"'
+    //             }
+    //         }
+    //     }
+    // }
 
     post {
         success {
