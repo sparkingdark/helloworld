@@ -36,6 +36,7 @@ pipeline {
             steps {
                 script {
                         try {
+                            echo $GITHUB_TOKEN
                             def url = "https://api.github.com/repos/sparkingdark/helloworld/actions/workflows/hello_world.yml/dispatches"
                             def payload = '{"ref":"main"}'  // JSON payload without the trailing comma
                             def response = sh(script: 'curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" -d \'' + payload + '\' ' + url, returnStdout: true).trim()
