@@ -5,6 +5,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      RELEASE_VERSION: ${{ steps.tag.outputs.new_tag }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -67,7 +69,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "rc3dockerregistry/helloworld:${{ needs.release.outputs.tag.outputs.new_tag }}"
+          tags: "rc3dockerregistry/helloworld:${{ needs.release.outputs.RELEASE_VERSION }}"
 
   scan_docker_image:
     runs-on: ubuntu-latest
