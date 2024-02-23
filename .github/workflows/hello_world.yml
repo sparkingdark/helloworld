@@ -10,12 +10,13 @@ jobs:
       with:
         fetch-depth: '0'
     - name: Minor version for each merge
-      id: taggerDryRun
+      id: tag
       uses: anothrNick/github-tag-action@1.36.0
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         WITH_V: true
         DRY_RUN: false
+   
 
   # gettag:
   #   runs-on: ubuntu-latest
@@ -61,6 +62,12 @@ jobs:
           context: .
           push: true
           tags: "rc3dockerregistry/helloworld:latest"
+      - name: Build and push tagged
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: "rc3dockerregistry/helloworld:${{ needs.release.outputs.tag.outputs.new_tag }}"
 
   scan_docker_image:
     runs-on: ubuntu-latest
