@@ -23,7 +23,7 @@ jobs:
       uses: marvinpinto/action-automatic-releases@v1.2.1
       with:
         draft: true
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        repo_token: ${{ secrets.GH_TOKEN }}
         title: "${{ steps.tag.outputs.tag }}: [title-edit-me] by:${{ github.actor }}"
         automatic_release_tag: ${{ steps.tag.outputs.new_tag }}
 
