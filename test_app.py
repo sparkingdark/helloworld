@@ -11,7 +11,7 @@ class FlaskAppTest(unittest.TestCase):
     def test_hello_world(self):
         response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Deployed New version 777', response.data)
+        self.assertIn(b'Deployed New version 88', response.data)
 
 if __name__ == '__main__':
     unittest.main()
