@@ -1,0 +1,70 @@
+name: Test Database Table with Liquibase (Container)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-db-table:
+    runs-on: ubuntu-latest
+    services:
+      # Choose your desired database service (MySQL or PostgreSQL)
+      db:
+        image: mysql:8.0  # Replace with postgres:latest for PostgreSQL
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_USERNAME: root
+          MYSQL_PASSWORD: password # Access from secrets (for MySQL)
+          # Add similar environment variables for PostgreSQL if needed
+          #  POSTGRES_PASSWORD: password  # Replace with a strong password (for PostgreSQL)
+          # Add environment variables for additional database configurations if needed
+        ports:
+          - 3306:3306  # Map container port to runner port (for MySQL)
+          - 5432:5432  # Map container port to runner port (for PostgreSQL)
+    steps:
+      - uses: actions/checkout@v3
+
+      # Install Liquibase
+      - name: Install Liquibase
+        run: |
+          wget https://download.liquibase.org/liquibase/liquibase-maven-plugin/4.23.0/liquibase-maven-plugin-4.23.0.zip
+          unzip liquibase-maven-plugin-4.23.0.zip
+          export PATH=$PATH:./liquibase-maven-plugin-4.23.0/bin
+
+      # Configure Liquibase connection details (using service information)
+      - name: Configure Liquibase connection (MySQL)
+        env:
+          LIQUIBASE_URL: jdbc:mysql://db:3306/test_db  # Adjust for your database name
+          LIQUIBASE_USERNAME: root  # Adjust username if needed
+          LIQUIBASE_PASSWORD: password  # Access from secrets
+        run: |
+          echo "Configured Liquibase connection for MySQL"
+
+      - name: Configure Liquibase connection (PostgreSQL)
+        env:
+          LIQUIBASE_URL: jdbc:postgresql://db:5432/test_db  # Adjust for your database name
+          LIQUIBASE_USERNAME: postgres  # Adjust username if needed
+          LIQUIBASE_PASSWORD: password  # Access from secrets
+        run: |
+          echo "Configured Liquibase connection for PostgreSQL"
+
+      # Place your Liquibase changelog file
+      - name: Copy Liquibase changelog
+        uses: actions/upload-artifact@v3
+        with:
+          name: liquibase-changelog
+          path: database_change/changelog_v1.xml
+
+      # Execute Liquibase update
+      - name: Run Liquibase update
+        run: |
+          liquibase --changeLogFile @liquibase-changelog/changelog.xml update
+
+      # Verify table creation (adjust query based on your table name)
+      - name: Verify table creation (MySQL)
+        run: |
+          mysql --host db -u root -ppassword -D test_db -e "SHOW TABLES LIKE 'testdb'" | grep your_table_name || exit 1
+
+      - name: Verify table creation (PostgreSQL)
+        run: |
+          psql -h db -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables WHERE table_name = 'testdb'" | grep your_table_name || exit 1
