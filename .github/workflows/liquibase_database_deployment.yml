@@ -27,9 +27,12 @@ jobs:
       # Install Liquibase
       - name: Install Liquibase
         run: |
-          wget https://github.com/liquibase/liquibase/releases/download/v4.26.0/liquibase-4.26.0.zip
-          unzip liquibase-4.26.0.zip
-          export PATH=$PATH:./liquibase-4.26.0/bin
+            wget -O- https://repo.liquibase.com/liquibase.asc | gpg --dearmor > liquibase-keyring.gpg && \
+            cat liquibase-keyring.gpg | sudo tee /usr/share/keyrings/liquibase-keyring.gpg > /dev/null && \
+            echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/liquibase-keyring.gpg] https://repo.liquibase.com stable main' | sudo tee /etc/apt/sources.list.d/liquibase.list
+            apt-get update
+            apt-get install liquibase
+            liquibase --version
 
       # Configure Liquibase connection details (using service information)
       - name: Configure Liquibase connection (MySQL)
