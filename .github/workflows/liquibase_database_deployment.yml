@@ -27,9 +27,9 @@ jobs:
       # Install Liquibase
       - name: Install Liquibase
         run: |
-          wget https://download.liquibase.org/liquibase/liquibase-maven-plugin/4.23.0/liquibase-maven-plugin-4.23.0.zip
-          unzip liquibase-maven-plugin-4.23.0.zip
-          export PATH=$PATH:./liquibase-maven-plugin-4.23.0/bin
+          wget https://github.com/liquibase/liquibase/releases/download/v4.26.0/liquibase-4.26.0.zip
+          unzip liquibase-4.26.0.zip
+          export PATH=$PATH:./liquibase-4.26.0/bin
 
       # Configure Liquibase connection details (using service information)
       - name: Configure Liquibase connection (MySQL)
