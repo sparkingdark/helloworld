@@ -43,13 +43,13 @@ jobs:
         run: |
           echo "Configured Liquibase connection for MySQL"
 
-      - name: Configure Liquibase connection (PostgreSQL)
-        env:
-          LIQUIBASE_URL: jdbc:postgresql://db:5432/test_db  # Adjust for your database name
-          LIQUIBASE_USERNAME: postgres  # Adjust username if needed
-          LIQUIBASE_PASSWORD: password  # Access from secrets
-        run: |
-          echo "Configured Liquibase connection for PostgreSQL"
+    #   - name: Configure Liquibase connection (PostgreSQL)
+    #     env:
+    #       LIQUIBASE_URL: jdbc:postgresql://db:5432/test_db  # Adjust for your database name
+    #       LIQUIBASE_USERNAME: postgres  # Adjust username if needed
+    #       LIQUIBASE_PASSWORD: password  # Access from secrets
+    #     run: |
+    #       echo "Configured Liquibase connection for PostgreSQL"
 
       # Place your Liquibase changelog file
       - name: Copy Liquibase changelog
@@ -61,7 +61,7 @@ jobs:
       # Execute Liquibase update
       - name: Run Liquibase update
         run: |
-          liquibase --changeLogFile @liquibase-changelog/changelog.xml update
+          liquibase --changeLogFile @liquibase-changelog/changelog.xml  update  --url jdbc:mysql://localhost:3306/test_db
 
       # Verify table creation (adjust query based on your table name)
       - name: Verify table creation (MySQL)
