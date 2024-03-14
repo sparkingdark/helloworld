@@ -51,15 +51,9 @@ jobs:
     #     run: |
     #       echo "Configured Liquibase connection for PostgreSQL"
 
-      # Place your Liquibase changelog file
-      - name: Download PostgreSQL JDBC Driver
-        uses: actions/download-artifact@v3
-        with:
-          name: jdbc-driver-postgresql
-          url: https://jdbc.postgresql.org/download/postgresql-42.3.6.jar
-
-      - name: Move downloaded artifact
+      - name: Download && Move downloaded artifact
         run: |
+            wget https://jdbc.postgresql.org/download/postgresql-42.3.6.jar 
             mv jdbc-driver-*.jar lib/  # Adjust the destination path (e.g., lib) as needed
 
       - name: Copy Liquibase changelog
