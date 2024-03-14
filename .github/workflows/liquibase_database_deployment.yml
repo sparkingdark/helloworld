@@ -54,7 +54,7 @@ jobs:
       - name: Download && Move downloaded artifact
         run: |
             wget https://jdbc.postgresql.org/download/postgresql-42.3.6.jar 
-            mv jdbc-driver-*.jar lib/  # Adjust the destination path (e.g., lib) as needed
+            mv postgresql-42.3.6.jar lib/  # Adjust the destination path (e.g., lib) as needed
 
       - name: Copy Liquibase changelog
         uses: actions/upload-artifact@v3
