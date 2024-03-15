@@ -65,7 +65,9 @@ jobs:
       # Execute Liquibase update
       - name: Run Liquibase update
         run: |
-          liquibase --changeLogFile /home/runner/work/helloworld/helloworld/changelog.xml update --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password
+          ls
+          cd /home/runner/work/helloworld
+          liquibase --changeLogFile changelog.xml update --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password
 
       # Verify table creation (adjust query based on your table name)
       - name: Verify table creation (MySQL)
