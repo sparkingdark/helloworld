@@ -55,7 +55,6 @@ jobs:
         run: |
           echo "driver: org.postgresql.Driver" >> liquibase.properties
           echo "classpath: /lib/postgresql-42.3.6.jar" >> liquibase.properties
-          echo "liquibase.secureParsing=false" >> liquibase.properties
 
       - name: Copy Liquibase changelog
         uses: actions/upload-artifact@v3
@@ -68,7 +67,7 @@ jobs:
         run: |
           ls
           cd database_change
-          liquibase --changeLogFile changelog_v1.xml update --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password
+          liquibase --changeLogFile changelog_v1.xml update --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password --liquibase.secureParsing=false
 
       # Verify table creation (adjust query based on your table name)
       - name: Verify table creation (MySQL)
