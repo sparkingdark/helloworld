@@ -55,6 +55,7 @@ jobs:
         run: |
           echo "driver: org.postgresql.Driver" >> liquibase.properties
           echo "classpath: /lib/postgresql-42.3.6.jar" >> liquibase.properties
+          echo "liquibase.secureParsing=false" >> liquibase.properties
 
       - name: Copy Liquibase changelog
         uses: actions/upload-artifact@v3
