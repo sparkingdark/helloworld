@@ -74,4 +74,4 @@ jobs:
 
       - name: Verify table creation (PostgreSQL)
         run: |
-          psql -h http://localhost:5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables WHERE table_name = 'testdb'" | grep testdb|| exit 1
+          psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables WHERE table_name = 'testdb'" | grep testdb || exit 1
