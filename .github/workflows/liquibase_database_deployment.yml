@@ -10,17 +10,13 @@ jobs:
     services:
       # Choose your desired database service (MySQL or PostgreSQL)
       db:
-        image: mysql:8.0  # Replace with postgres:latest for PostgreSQL
+        image: postgres:latest
         env:
-          MYSQL_DATABASE: test_db
-          MYSQL_USERNAME: root
-          MYSQL_PASSWORD: password # Access from secrets (for MySQL)
-          # Add similar environment variables for PostgreSQL if needed
-          #  POSTGRES_PASSWORD: password  # Replace with a strong password (for PostgreSQL)
-          # Add environment variables for additional database configurations if needed
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
         ports:
-          - 3306:3306  # Map container port to runner port (for MySQL)
-          - 5432:5432  # Map container port to runner port (for PostgreSQL)
+          - 5432:5432
     steps:
       - uses: actions/checkout@v3
 
@@ -69,7 +65,7 @@ jobs:
       # Execute Liquibase update
       - name: Run Liquibase update
         run: |
-          liquibase --changeLogFile @liquibase-changelog/changelog.xml  update  --url jdbc:mysql://localhost:3306/test_db
+          liquibase --changeLogFile @liquibase-changelog/changelog.xml  update  --url jdbc:postgres://localhost:5432/test_db
 
       # Verify table creation (adjust query based on your table name)
       - name: Verify table creation (MySQL)
