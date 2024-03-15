@@ -70,10 +70,7 @@ jobs:
           cd database_change
           liquibase --changeLogFile changelog_v1.xml update --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password
 
-      # Verify table creation (adjust query based on your table name)
-      - name: Verify table creation (MySQL)
-        run: |
-          psql --host db -U root -password -D test_db -e "SHOW TABLES LIKE 'testdb'" | grep testdb || exit 1
+      # Verify table creation (adjust query based on your table name
 
       - name: Verify table creation (PostgreSQL)
         run: |
