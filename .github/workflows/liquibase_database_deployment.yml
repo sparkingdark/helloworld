@@ -73,8 +73,8 @@ jobs:
       # Verify table creation (adjust query based on your table name)
       - name: Verify table creation (MySQL)
         run: |
-          mysql --host db -u root -ppassword -D test_db -e "SHOW TABLES LIKE 'testdb'" | grep your_table_name || exit 1
+          psql --host db -u root -password -D test_db -e "SHOW TABLES LIKE 'testdb'" | grep testdb || exit 1
 
       - name: Verify table creation (PostgreSQL)
         run: |
-          psql -h db -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables WHERE table_name = 'testdb'" | grep your_table_name || exit 1
+          psql -h db -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables WHERE table_name = 'testdb'" | grep testdb|| exit 1
