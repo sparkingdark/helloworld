@@ -53,6 +53,7 @@ jobs:
 
       - name: Download && Move downloaded artifact
         run: |
+            ls
             wget https://jdbc.postgresql.org/download/postgresql-42.3.6.jar 
             mv postgresql-42.3.6.jar "${HOME}/lib"  # Adjust the path as needed
 
