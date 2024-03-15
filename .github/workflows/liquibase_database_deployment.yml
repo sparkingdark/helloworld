@@ -73,7 +73,7 @@ jobs:
       # Verify table creation (adjust query based on your table name)
       - name: Verify table creation (MySQL)
         run: |
-          psql --host db -u root -password -D test_db -e "SHOW TABLES LIKE 'testdb'" | grep testdb || exit 1
+          psql --host db -U root -password -D test_db -e "SHOW TABLES LIKE 'testdb'" | grep testdb || exit 1
 
       - name: Verify table creation (PostgreSQL)
         run: |
