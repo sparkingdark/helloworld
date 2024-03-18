@@ -17,6 +17,14 @@ jobs:
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
+      db1:
+        image: postgres:latest
+        env:
+            POSTGRES_DB: prod_db
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+        ports:
+            - 5433:5432
     steps:
       - uses: actions/checkout@v3
 
@@ -64,7 +72,7 @@ jobs:
           path: database_change/changelog_v1.xml
      
       # Execute Liquibase update
-      - name: Run Liquibase update
+      - name: Run Liquibase update on test
         run: |
           ls
           cd database_change
@@ -75,3 +83,15 @@ jobs:
       - name: Verify table creation (PostgreSQL)
         run: |
           PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables" | grep "preprodtable" || exit 1
+      
+      - name: Run Liquibase update
+        run: |
+            ls
+            cd database_change
+            liquibase --changeLogFile changelog_change_on_env.xml update --context-filter="prod" --url jdbc:postgresql://localhost:5433/test_db --username postgres --password password
+  
+        # Verify table creation (adjust query based on your table name
+  
+      - name: Verify table creation (PostgreSQL)
+        run: |
+            PGPASSWORD=password psql -h localhost -p 5433 -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables" | grep "prodtable" || exit 1
