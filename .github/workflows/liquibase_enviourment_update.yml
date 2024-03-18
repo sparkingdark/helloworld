@@ -94,4 +94,4 @@ jobs:
   
       - name: Verify table creation (PostgreSQL)
         run: |
-            PGPASSWORD=password psql -h localhost -p 5433 -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables" | grep "prodtable" || exit 1
+            PGPASSWORD=password psql -h localhost -p 5433 -U postgres -d prod_db -t -c "SELECT * FROM information_schema.tables" | grep "prodtable" || exit 1
