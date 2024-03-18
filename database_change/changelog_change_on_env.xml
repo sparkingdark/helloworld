@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+  <changeSet author="debo" id="1">
+    <createTable tableName="testdb">
+      <column name="username" type="varchar(255)" />
+      <column name="password" type="integer" />
+      </createTable>
+    </changeSet>
+
+ <changeSet author="debo" id="2" context="test">
+    <createTable tableName="preprodtable">
+      <column name="username" type="varchar(255)" />
+      <column name="password" type="integer" />
+      </createTable>
+    </changeSet>
+
+ <changeSet author="debo" id="3" context="prod">
+    <createTable tableName="prodtable">
+      <column name="username" type="varchar(255)" />
+      <column name="password" type="integer" />
+      </createTable>
+    </changeSet>
+</databaseChangeLog>
