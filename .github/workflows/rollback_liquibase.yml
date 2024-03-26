@@ -74,6 +74,7 @@ jobs:
       # Execute Liquibase rollback
       - name: Run Liquibase rollback
         run: |
+          cd database_change
           liquibase --changeLogFile rollback.xml rollbackCount 1 --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password
 
       # Verify table removal (PostgreSQL)
