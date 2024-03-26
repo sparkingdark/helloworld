@@ -3,6 +3,7 @@ name: Test Database Table with Liquibase (Container)
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   test-db-table:
