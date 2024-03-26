@@ -3,8 +3,9 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
-  <!-- New ChangeSets for adding and rolling back the new table -->
-  <changeSet author="debo" id="4">
+
+<!-- Changeset for creating 'newtable' -->
+  <changeSet author="debo" id="1">
     <createTable tableName="newtable">
       <column name="id" type="int" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
@@ -15,6 +16,36 @@
     </createTable>
     <rollback>
       <dropTable tableName="newtable" />
+    </rollback>
+  </changeSet>
+
+  <!-- Changeset for creating 'table1' -->
+  <changeSet author="debo" id="2">
+    <createTable tableName="table1">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="description" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <rollback>
+      <dropTable tableName="table1" />
+    </rollback>
+  </changeSet>
+
+  <!-- Changeset for creating 'table2' -->
+  <changeSet author="debo" id="3">
+    <createTable tableName="table2">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="value" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <rollback>
+      <dropTable tableName="table2" />
     </rollback>
   </changeSet>
 </databaseChangeLog>
