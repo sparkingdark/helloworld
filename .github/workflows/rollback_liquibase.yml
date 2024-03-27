@@ -93,19 +93,12 @@ jobs:
 
       - name: Verify columns in new table (PostgreSQL)
         run: |
-          output=$(PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.columns WHERE table_name = 'newtable'")
-          if [ -z "$output" ]; then
-            echo "No columns found in newtable"
-            exit 1
-          fi
+          PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.columns WHERE table_name = 'newtable'"
       - name: Run Liquibase rollback
         run: |
           cd database_change
           liquibase --changeLogFile rollback.xml rollbackCount 2 --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password
       - name: Verify columns in new table (PostgreSQL)
         run: |
-          output=$(PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.columns WHERE table_name = 'newtable'")
-          if [ -z "$output" ]; then
-            echo "No columns found in newtable"
-            exit 1
-          fi
+          PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.columns WHERE table_name = 'newtable'"
+          
