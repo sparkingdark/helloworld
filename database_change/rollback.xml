@@ -48,4 +48,16 @@
       <dropTable tableName="table2" />
     </rollback>
   </changeSet>
+
+  <!-- Changeset for adding a new column to 'newtable' -->
+<changeSet author="debo" id="4" tag="preprod">
+  <addColumn tableName="newtable">
+    <column name="new_column" type="varchar(100)">
+      <constraints nullable="false"/>
+    </column>
+  </addColumn>
+  <rollback>
+    <dropColumn tableName="newtable" columnName="new_column" />
+  </rollback>
+</changeSet>
 </databaseChangeLog>

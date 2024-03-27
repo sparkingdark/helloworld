@@ -83,3 +83,29 @@ jobs:
         run: |
           PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables WHERE table_name IN ('newtable', 'table1', 'table2')" | grep -E 'newtable|table1|table2' || exit 1   
       #PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.tables WHERE table_name = 'newtable'" | grep newtable && exit 1 || exit 0
+      - name: Run Liquibase column add
+        run: |
+          ls
+          cd database_change
+          liquibase --changeLogFile rollback.xml update --context-filter="preprod" --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password
+
+      # Verify table creation (adjust query based on your table name
+
+      - name: Verify columns in new table (PostgreSQL)
+        run: |
+          output=$(PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.columns WHERE table_name = 'newtable'")
+          if [ -z "$output" ]; then
+            echo "No columns found in newtable"
+            exit 1
+          fi
+      - name: Run Liquibase rollback
+        run: |
+          cd database_change
+          liquibase --changeLogFile rollback.xml rollbackCount 2 --url jdbc:postgresql://localhost:5432/test_db --username postgres --password password
+      - name: Verify columns in new table (PostgreSQL)
+        run: |
+          output=$(PGPASSWORD=password psql -h localhost -p 5432 -U postgres -d test_db -t -c "SELECT * FROM information_schema.columns WHERE table_name = 'newtable'")
+          if [ -z "$output" ]; then
+            echo "No columns found in newtable"
+            exit 1
+          fi
