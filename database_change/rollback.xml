@@ -50,7 +50,7 @@
   </changeSet>
 
   <!-- Changeset for adding a new column to 'newtable' -->
-<changeSet author="debo" id="4" tag="preprod">
+<changeSet author="debo" id="4" context="preprod">
   <addColumn tableName="newtable">
     <column name="new_column" type="varchar(100)">
       <constraints nullable="false"/>
